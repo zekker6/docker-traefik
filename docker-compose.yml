@@ -1,0 +1,33 @@
+# project: na
+
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v2.5
+    restart: unless-stopped
+    volumes:
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+    - "80:80"
+    - "8080:8080"
+    networks: 
+      - tk_web
+
+  tk-hosts:
+    image: ghcr.io/zekker6/traefik-hosts-generator:v0.5.2
+    restart: unless-stopped
+    volumes:
+      - /etc/hosts:/hosts
+    command: "-platform=linux -traefik=true -traefikVersion=2 -traefikUrl=http://traefik:8080/api -file=/hosts -watch=true -freq=10"
+    networks:
+      - tk_web
+    depends_on:
+    - traefik
+
+
+networks:
+  tk_web:
+    external: true
+
