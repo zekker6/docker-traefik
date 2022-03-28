@@ -16,7 +16,7 @@ services:
       - tk_web
 
   tk-hosts:
-    image: ghcr.io/zekker6/traefik-hosts-generator:v0.5.2
+    image: ghcr.io/zekker6/traefik-hosts-generator:v0.5.5
     restart: unless-stopped
     volumes:
       - /etc/hosts:/hosts
