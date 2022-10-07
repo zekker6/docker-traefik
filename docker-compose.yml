@@ -4,7 +4,7 @@ version: '3'
 
 services:
   traefik:
-    image: traefik:v2.8
+    image: traefik:v2.8@sha256:72164cb63797a902ba7c33dcb75349644bbf762323a0fed961ae25f54635ac93
     restart: unless-stopped
     volumes:
       - "./traefik.yml:/etc/traefik/traefik.yml"
@@ -16,7 +16,7 @@ services:
       - tk_web
 
   tk-hosts:
-    image: ghcr.io/zekker6/traefik-hosts-generator:v0.5.5
+    image: ghcr.io/zekker6/traefik-hosts-generator:v0.5.5@sha256:de14d027b6b6509cca1df2ed5f75615b00d1c57f24609dd851f0d7fe69fa021e
     restart: unless-stopped
     volumes:
       - /etc/hosts:/hosts
