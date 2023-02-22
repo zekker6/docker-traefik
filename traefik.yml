@@ -1,6 +1,6 @@
 providers:
   docker:
-    defaultRule: 'Host(`{{range $i, $e := splitList "-" .Name}}{{$e}}.{{end}}docker.localhost`)'
+    defaultRule: 'Host(`{{range $i, $e := splitList "-" .Name}}{{$e}}.{{end}}docker.loc`)'
     network: "tk_web"
 
 api:
