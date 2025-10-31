@@ -86,7 +86,7 @@ services:
 
 ### 3. Access Your Service
 
-If using the automatic host file generator, services will be accessible via their generated hostname (e.g., `http://service-name.docker.loc`).
+If using the automatic host file generator, services will be accessible via their generated hostname (e.g., `http://my.service.docker.loc` for a container named `my-service`).
 
 Otherwise, you can access services through:
 - **Port 80**: HTTP traffic routed by Traefik
@@ -153,7 +153,3 @@ docker network create tk_web
 - Verify Traefik is running: `docker compose ps`
 - Check that port 8080 is not in use by another application
 - Check Traefik logs for errors: `docker compose logs traefik`
-
-## License
-
-This project configuration is provided as-is for use with Traefik.
