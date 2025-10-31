@@ -66,10 +66,10 @@ networks:
 By default, Traefik will automatically create a route for your service based on the container name. The naming convention splits the container name by hyphens and joins with dots:
 
 For example:
-- A container named `my-web-app` would be accessible at `http://my.web.app..docker.loc` (note: the template produces a double dot before docker.loc)
-- A container named `frontend` would be accessible at `http://frontend..docker.loc`
+- A container named `my-web-app` would be accessible at `http://my.web.app..docker.loc` (note: the template produces a double dot before docker.loc when there are hyphens)
+- A container named `frontend` would be accessible at `http://frontend.docker.loc`
 
-**Note:** The default rule template produces hostnames with a trailing dot before `docker.loc`. You may want to override this with custom labels if you need different hostnames.
+**Note:** The default rule template produces hostnames with an extra trailing dot before `docker.loc` when the container name contains hyphens. You may want to override this with custom labels if you need different hostnames.
 
 You can override this behavior with Traefik labels:
 
@@ -102,9 +102,10 @@ The Traefik configuration includes:
 
 - **Docker Provider**: Automatically discovers services running on Docker
 - **Default Rule**: Converts container names to hostnames by splitting on hyphens and joining with dots
-  - Example: `my-service` → `my.service..docker.loc` (note the double dot)
+  - Example: `my-service` → `my.service..docker.loc` (double dot when hyphens are present)
   - Example: `web-app-frontend` → `web.app.frontend..docker.loc`
-  - The template adds a dot after each segment, resulting in a double dot before `docker.loc`
+  - Example: `frontend` → `frontend.docker.loc` (single dot when no hyphens)
+  - The template adds a dot after each segment from splitting on hyphens
 - **Network**: Uses the `tk_web` network for service discovery
 - **API**: Insecure API enabled for the dashboard
 
