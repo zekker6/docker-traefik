@@ -28,7 +28,7 @@ docker compose up -d
 ```
 
 This will start two services:
-- **traefik**: The Traefik reverse proxy (v3.5.4)
+- **traefik**: The Traefik reverse proxy
 - **tk-hosts**: A hosts file generator that automatically updates `/etc/hosts` based on discovered services
 
 ### 3. Access the Traefik Dashboard
@@ -50,8 +50,6 @@ To connect other Docker services to this Traefik instance, you need to:
 In your service's `docker-compose.yml`, add the `tk_web` network:
 
 ```yaml
-version: '3'
-
 services:
   myapp:
     image: myapp:latest
@@ -68,8 +66,10 @@ networks:
 By default, Traefik will automatically create a route for your service based on the container name. The naming convention splits the container name by hyphens and joins with dots:
 
 For example:
-- A container named `my-web-app` would be accessible at `http://my.web.app.docker.loc`
-- A container named `frontend` would be accessible at `http://frontend.docker.loc`
+- A container named `my-web-app` would be accessible at `http://my.web.app..docker.loc` (note: the template produces a double dot before docker.loc)
+- A container named `frontend` would be accessible at `http://frontend..docker.loc`
+
+**Note:** The default rule template produces hostnames with a trailing dot before `docker.loc`. You may want to override this with custom labels if you need different hostnames.
 
 You can override this behavior with Traefik labels:
 
@@ -102,8 +102,9 @@ The Traefik configuration includes:
 
 - **Docker Provider**: Automatically discovers services running on Docker
 - **Default Rule**: Converts container names to hostnames by splitting on hyphens and joining with dots
-  - Example: `my-service` → `my.service.docker.loc`
-  - Example: `web-app-frontend` → `web.app.frontend.docker.loc`
+  - Example: `my-service` → `my.service..docker.loc` (note the double dot)
+  - Example: `web-app-frontend` → `web.app.frontend..docker.loc`
+  - The template adds a dot after each segment, resulting in a double dot before `docker.loc`
 - **Network**: Uses the `tk_web` network for service discovery
 - **API**: Insecure API enabled for the dashboard
 
