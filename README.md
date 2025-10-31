@@ -65,13 +65,11 @@ networks:
 
 ### 2. Configure Traefik Labels (Optional)
 
-By default, Traefik will automatically create a route for your service using the naming convention:
+By default, Traefik will automatically create a route for your service based on the container name. The naming convention splits the container name by hyphens and joins with dots:
 
-```
-Host(`service-name.docker.loc`)
-```
-
-For example, a container named `my-web-app` would be accessible at `http://my.web.app.docker.loc`.
+For example:
+- A container named `my-web-app` would be accessible at `http://my.web.app.docker.loc`
+- A container named `frontend` would be accessible at `http://frontend.docker.loc`
 
 You can override this behavior with Traefik labels:
 
@@ -103,8 +101,9 @@ Otherwise, you can access services through:
 The Traefik configuration includes:
 
 - **Docker Provider**: Automatically discovers services running on Docker
-- **Default Rule**: `Host('{{range $i, $e := splitList "-" .Name}}{{e}}.{{end}}docker.loc')`
-  - Converts container names to hostnames (e.g., `my-service` → `my.service.docker.loc`)
+- **Default Rule**: Converts container names to hostnames by splitting on hyphens and joining with dots
+  - Example: `my-service` → `my.service.docker.loc`
+  - Example: `web-app-frontend` → `web.app.frontend.docker.loc`
 - **Network**: Uses the `tk_web` network for service discovery
 - **API**: Insecure API enabled for the dashboard
 
